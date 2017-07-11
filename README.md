@@ -17,6 +17,11 @@ Instructions here https://kubernetes.io/docs/tasks/tools/install-kubectl/#instal
 
 Clone this repo and enter directory
 
+```
+git clone ssh://git@stash.dev-charter.net:7999/~cmoon/vagrant-kube.git
+cd vagrant-kube
+```
+
 ### Start a cluster
 ```
 ./start-cluster.sh
