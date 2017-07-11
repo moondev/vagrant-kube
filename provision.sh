@@ -19,7 +19,7 @@ until [ "$KUBEDNS" = "Running" ]
 do
 KUBEDNS=`kubectl --kubeconfig=/etc/kubernetes/admin.conf --namespace kube-system get pod -l=k8s-app=kube-dns -o jsonpath={.items..status.phase}`
 
-echo "
+PODSTATUS="
 
 
 
@@ -81,11 +81,10 @@ echo "
 BOOTSTRAPPING CLUSTER...
 CURRENT STATUS:
 
+`kubectl --kubeconfig=/etc/kubernetes/admin.conf get pods --all-namespaces`
 "
-
-kubectl --kubeconfig=/etc/kubernetes/admin.conf get pods --all-namespaces
-
 sleep 2
+echo "$PODSTATUS"
 done
 
 kubelet.service daemon-reload
