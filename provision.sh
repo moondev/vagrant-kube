@@ -13,11 +13,14 @@ kubectl --kubeconfig=/etc/kubernetes/admin.conf create -f https://git.io/kube-da
 
 KUBEDNS="Pending"
 
-echo "Waiting for kube-dns to deploy..."
+echo "Waiting for kube-dns to deploy. This may take a few minutes."
+sleep 5
 until [ "$KUBEDNS" = "Running" ]
 do
-echo "Waiting for kube-dns to deploy..."
 KUBEDNS=`kubectl --kubeconfig=/etc/kubernetes/admin.conf --namespace kube-system get pod -l=k8s-app=kube-dns -o jsonpath={.items..status.phase}`
+PODS="`kubectl --kubeconfig=/etc/kubernetes/admin.conf get pods --all-namespaces`"
+clear
+echo "$PODS"
 sleep 2
 done
 
