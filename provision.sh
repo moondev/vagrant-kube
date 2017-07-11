@@ -18,9 +18,73 @@ sleep 5
 until [ "$KUBEDNS" = "Running" ]
 do
 KUBEDNS=`kubectl --kubeconfig=/etc/kubernetes/admin.conf --namespace kube-system get pod -l=k8s-app=kube-dns -o jsonpath={.items..status.phase}`
-PODS="`kubectl --kubeconfig=/etc/kubernetes/admin.conf get pods --all-namespaces`"
-clear
-echo "$PODS"
+
+echo "
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BOOTSTRAPPING CLUSTER...
+CURRENT STATUS:
+
+"
+
+kubectl --kubeconfig=/etc/kubernetes/admin.conf get pods --all-namespaces
+
 sleep 2
 done
 
