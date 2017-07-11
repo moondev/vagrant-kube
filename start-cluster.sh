@@ -3,7 +3,7 @@
 echo "
 Attempting to remove cluster if it exists...
 "
-sleep2
+sleep 2
 
 vagrant destroy -f
 rm -rf .vagrant
