@@ -25,6 +25,7 @@ kubectl config set-cluster vagrant-kube --server=http://192.168.33.33:8080
 kubectl config set-context vagrant-kube --cluster=vagrant-kube
 kubectl config use-context vagrant-kube
 
+
 echo "
 Testing kubectl...
 "
@@ -37,4 +38,10 @@ Launching Dashboard...
 "
 sleep 2
 
+kubectl run drupal --image drupal:latest --port 80
+kubectl expose deployment/drupal --type NodePort
+kubectl get services
+
+
 open http://192.168.33.33:8080/ui
+

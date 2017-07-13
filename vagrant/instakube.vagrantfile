@@ -1,0 +1,55 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "instakube"
+  config.vm.network "private_network", ip: "192.168.33.33"
+  config.ssh.username = "ubuntu"
+  config.ssh.insert_key = true
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false
+    vb.memory = "6000"
+    vb.cpus = 2
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    vb.customize [ "modifyvm", :id, "--uartmode1", "disconnected" ]
+  end
+
+$script = <<SCRIPT
+echo "Waiting for kube-dns to deploy. This may take a few minutes."
+sleep 5
+until [ "$KUBEDNS" = "Running" ]
+do
+KUBEDNS=`kubectl --kubeconfig=/etc/kubernetes/admin.conf --namespace kube-system get pod -l=k8s-app=kube-dns -o jsonpath={.items..status.phase}`
+PODSTATUS="
+
+
+BOOTSTRAPPING CLUSTER...
+CURRENT STATUS:
+
+`kubectl --kubeconfig=/etc/kubernetes/admin.conf get pods --all-namespaces`
+"
+sleep 2
+echo "$PODSTATUS"
+done
+
+echo "
+
+=======================================================================
+INSTAKUBE READY
+
+Dashboard available at http://192.168.33.33:8080/ui
+
+Run the terminal commands below to configure your kubectl context:
+
+kubectl config set-cluster instakube --server=http://192.168.33.33:8080
+kubectl config set-context instakube --cluster=vagrant-kube
+kubectl config use-context instakube
+=======================================================================
+
+"
+
+SCRIPT
+
+
+
+config.vm.provision "shell", inline: $script
+
+end

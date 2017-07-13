@@ -1,0 +1,40 @@
+version: '3'
+
+# networks:
+#   instakube:
+#     driver: bridge
+
+services:
+  # proxy:
+  #   image: traefik
+  #   command: --web --docker --docker.domain=docker.localhost --logLevel=DEBUG
+  #   ports:
+  #     - "9999:80"
+  #     - "8888:8080"
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - /dev/null:/traefik.toml
+
+  instakube:
+    container_name: instakube
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    ports:
+      - "8080:8080"
+      - "80:80"
+    privileged: true
+    # networks:
+    #   instakube:
+    #     ipv4_address: 172.19.0.2
+
+
+
+  # ingress:
+  #   image: picoded/http-simple-proxy:latest
+  #   environment:
+  #     FORWARD_HOST: instakube
+  #     FORWARD_PORT: 32236
+  #     FORWARD_PROT: http
+  #   ports:
+  #     - "7777:80"
